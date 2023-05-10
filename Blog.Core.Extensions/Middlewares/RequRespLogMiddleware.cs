@@ -7,7 +7,6 @@ using Blog.Core.Common.LogHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Ubiety.Dns.Core.Common;
 
 namespace Blog.Core.Extensions.Middlewares
 {
@@ -102,7 +101,7 @@ namespace Blog.Core.Extensions.Middlewares
                 Parallel.For(0, 1, e =>
                 {
                     //LogLock.OutSql2Log("RequestResponseLog", new string[] { "Request Data:", content });
-                    LogLock.OutLogAOP("RequestResponseLog", new string[] { "Request Data -  RequestJsonDataType:" + requestResponse.GetType().ToString(), content });
+                    LogLock.OutLogAOP("RequestResponseLog", context.TraceIdentifier, new string[] { "Request Data -  RequestJsonDataType:" + requestResponse.GetType().ToString(), content });
 
                 });
                 //SerilogServer.WriteLog("RequestResponseLog", new string[] { "Request Data:", content });
@@ -125,7 +124,7 @@ namespace Blog.Core.Extensions.Middlewares
                 Parallel.For(0, 1, e =>
                 {
                     //LogLock.OutSql2Log("RequestResponseLog", new string[] { "Response Data:", ResponseBody });
-                    LogLock.OutLogAOP("RequestResponseLog", new string[] { "Response Data -  ResponseJsonDataType:" + responseBody.GetType().ToString(), responseBody });
+                    LogLock.OutLogAOP("RequestResponseLog", response.HttpContext.TraceIdentifier, new string[] { "Response Data -  ResponseJsonDataType:" + responseBody.GetType().ToString(), responseBody });
 
                 });
                 //SerilogServer.WriteLog("RequestResponseLog", new string[] { "Response Data:", responseBody });

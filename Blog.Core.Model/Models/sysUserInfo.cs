@@ -8,8 +8,8 @@ namespace Blog.Core.Model.Models
     /// 用户信息表
     /// </summary>
     //[SugarTable("SysUserInfo")]
-    [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
-    public class SysUserInfo : SysUserInfoRoot<int>
+    [SugarTable("SysUserInfo", "用户表")] //('数据库表名'，'数据库表备注')
+    public class SysUserInfo : SysUserInfoRoot<long>
     {
         public SysUserInfo()
         {
@@ -33,7 +33,7 @@ namespace Blog.Core.Model.Models
         /// </summary>
         [SugarColumn(Length = 200, IsNullable = true, ColumnDescription = "登录账号")]
         //:eg model 根据sqlsugar的完整定义可以如下定义，ColumnDescription可定义表字段备注
-        //[SugarColumn(IsNullable = false, ColumnDescription = "登录账号", IsPrimaryKey = false, IsIdentity = false, ColumnDataType = "nvarchar", Length = 50)]
+        //[SugarColumn(IsNullable = false, ColumnDescription = "登录账号", IsPrimaryKey = false, IsIdentity = false, Length = 50)]
         //ColumnDescription 表字段备注，  已在MSSQL测试，配合 [SugarTable("SysUserInfo", "用户表")]//('数据库表名'，'数据库表备注')
         //可以完整生成 表备注和各个字段的中文备注
         //2022/10/11
@@ -120,12 +120,20 @@ namespace Blog.Core.Model.Models
         [SugarColumn(IsNullable = true)]
         public bool IsDeleted { get; set; }
 
+        /// <summary>
+        /// 租户Id
+        /// </summary>
+        [SugarColumn(IsNullable = false,DefaultValue = "0")]
+        public long TenantId { get; set; }
+
+        [Navigate(NavigateType.OneToOne, nameof(TenantId))]
+        public SysTenant Tenant { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public List<string> RoleNames { get; set; }
 
         [SugarColumn(IsIgnore = true)]
-        public List<int> Dids { get; set; }
+        public List<long> Dids { get; set; }
 
         [SugarColumn(IsIgnore = true)]
         public string DepartmentName { get; set; }
